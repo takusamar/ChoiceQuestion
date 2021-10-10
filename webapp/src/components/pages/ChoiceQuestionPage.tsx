@@ -8,6 +8,7 @@ import { TQuestion } from "../../models/TQuestion";
 import { QuestionBox } from "../organisms/QuestionBox";
 import { SelectAnswer } from "../organisms/SelectAnswer";
 import { ShowAnswer } from "../organisms/ShowAnswer";
+import { shuffle } from "../../utils";
 
 export const ChoiceQuestionPage = () => {
   const title = data.title;
@@ -15,17 +16,19 @@ export const ChoiceQuestionPage = () => {
     q.no > 0 ? q : []
   );
 
+  const [orders, setOrders] = useState<number[]>([]);
   const [question, setQuestion] = useState<TQuestion>();
   const [yourAnswer, setYourAnswer] = useState<string | undefined>();
 
-  const getRandom = (min: number, max: number) => {
-    return Math.floor(Math.random() * (max - min)) + min;
-  };
-
   const showNextQuestion = () => {
     setYourAnswer(undefined);
-    const index = getRandom(0, questions.length);
-    setQuestion(questions[index]);
+    const newOrders =
+      orders.length > 0
+        ? orders
+        : shuffle([...Array(questions.length)].map((_, i) => i));
+    const order = newOrders[0];
+    setQuestion(questions[order]);
+    setOrders(newOrders.slice(1));
   };
 
   return (

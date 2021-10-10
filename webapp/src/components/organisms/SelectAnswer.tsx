@@ -8,6 +8,7 @@ import {
   RadioGroup,
 } from "@material-ui/core";
 import { OperateButton } from "../atoms/OperateButton";
+import { shuffle } from "../../utils";
 
 interface OwnProps {
   question: TQuestion;
@@ -22,14 +23,6 @@ export const SelectAnswer: React.FC<OwnProps> = ({
 }) => {
   const [options, setOptions] = useState<string[]>();
   const [selected, setSelected] = useState<string>("");
-
-  const shuffle = ([...array]) => {
-    for (let i = array.length - 1; i >= 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelected(event.target.value);
